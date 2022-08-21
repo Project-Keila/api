@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "dist",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     // "incremental": true,                              /* Save .tsbuildinfo files to allow for incremental compilation of projects. */
