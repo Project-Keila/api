@@ -26,7 +26,7 @@ router.get("/:tokenId", async (req, res, next) => {
 
     const certificate = await Certificate.findOneBy({ tokenId });
 
-    return res.json({ tokenId: certificate?.tokenId, offsetCapacity: certificate?.totalOffsetCapacity });
+    return res.json({ TOKEN: certificate?.tokenId, OFFSET: certificate?.totalOffsetCapacity });
 
   } catch (error: any) {
     return next(new Api500Error(error.message));
