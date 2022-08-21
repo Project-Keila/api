@@ -10,7 +10,7 @@ import uploadMetadata from "../utils/uploadMetadata";
 
 const router = Router();
 
-router.post("/certificate", isAuth, async (req, res, next) => {
+router.post("/certificate", async (req, res, next) => {
   try {
     const { token } = req.body;
     const data = verify(token, env.jwtSecret!);
@@ -100,31 +100,6 @@ router.post("/create-trees", isAuth, async (req, res, next) => {
   }
 })
 
-//router.get("/:type", async (req, res, next) => {
-//try {
-//let trees;
-//const { type } = req.params;
-//switch (type) {
-//case "apple-tree":
-//trees = await AppleTree.find();
-//break;
-//case "conifer-tree":
-//trees = await ConiferTree.find();
-//break;
-//case "poplar-tree":
-//trees = await PoplarTree.find();
-//break;
-//default:
-//break;
-//}
-
-//return res.json({ trees });
-
-//} catch (error: any) {
-//return next(new Api500Error(error.message))
-//}
-//})
-
 router.get("/:type", async (req, res, next) => {
   try {
     let trees;
@@ -152,40 +127,6 @@ router.get("/:type", async (req, res, next) => {
     return next(new Api500Error(error.message))
   }
 })
-
-
-//router.put("/", async (req, res, next) => {
-//try {
-//const { token } = req.body;
-
-//const data = verify(token, env.jwtSecret!)
-
-//if (typeof data === "object") {
-
-//const { id, type, minted, tokenId } = data;
-
-//switch (type) {
-//case "apple-tree":
-//await AppleTree.update(id, { minted });
-//break;
-//case "conifer-tree":
-//await ConiferTree.update(id, { minted });
-//break;
-//case "poplar-tree":
-//await PoplarTree.update(id, { minted });
-//break;
-//default:
-//break;
-//}
-
-//}
-//return res.json({ message: "updated successfully" })
-
-//} catch (error: any) {
-//return next(new Api500Error(error.message))
-
-//}
-//})
 
 router.delete("/", isAuth, async (_req, res, next) => {
   try {
