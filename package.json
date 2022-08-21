@@ -35,9 +35,9 @@
   },
   "scripts": {
     "dev": "nodemon --exec ts-node src/server.ts",
-    "start": "node dist/index.js",
+    "start": "node dist/server.js",
     "postinstall": "tsc",
-    "watch-node": "nodemon dist/index.js",
+    "watch-node": "nodemon dist/server.js",
     "watch-ts": "tsc -w",
     "deploy": "git add . && git commit -m Heroku && git push heroku master"
   },
