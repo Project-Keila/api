@@ -14,10 +14,12 @@ router.post("/certificate", async (req, res, next) => {
   try {
     const { token } = req.body;
     const data = verify(token, env.jwtSecret!);
-    let type, quantity;
+    let name, type, quantity;
     let trees;
     let treeCount = 0;
     if (typeof data === "object") {
+      console.log(data)
+      name = data.name;
       type = data.type;
       quantity = data.quantity;
     }
@@ -45,7 +47,7 @@ router.post("/certificate", async (req, res, next) => {
     trees = trees?.slice(0, parseInt(quantity));
 
     if (typeof trees === "object") {
-      const metadata = await uploadMetadata(type, trees);
+      const metadata = await uploadMetadata(name, type, trees);
       return res.json({ metadata })
     }
     return res.status(200).json({ trees, treeCount });

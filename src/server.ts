@@ -57,6 +57,7 @@ declare module 'express-session' {
   app.use("/auth", authRouter);
 
   app.use((err: BaseError, _req: Request, res: Response, _next: NextFunction) => {
+    console.log(err)
     res.status(err.statusCode ? err.statusCode : 500).json({ status: false, message: err.name ? err.name : "Something went wrong!" })
   })
 

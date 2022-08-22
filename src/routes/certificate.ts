@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { verify } from "jsonwebtoken";
 import env from "../env";
+import isAuth from "../middleware/isAuth";
 import { Certificate } from "../model/entity/Certificate";
 import { Api500Error } from "../utils/error/apiErrors";
 
@@ -50,6 +51,17 @@ router.put("/", async (req, res, next) => {
     return next(new Api500Error(error.message));
   }
 
+})
+
+router.delete("/", isAuth, async (_req, res, next) => {
+  try {
+    await Certificate.delete({})
+    return res.json({ success: true, message: "Deleted" })
+
+  } catch (error: any) {
+    return next(new Api500Error(error.message))
+
+  }
 })
 
 export default router;

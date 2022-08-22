@@ -8,33 +8,34 @@ import { ConiferTree } from '../model/entity/ConiferTree';
 import { PoplarTree } from '../model/entity/PoplarTree';
 import Jimp from 'jimp';
 import { Certificate } from '../model/entity/Certificate';
+import { off } from 'process';
 
 const API_KEY = env.nftApiKey;
 
-async function writeToCertificate() {
+async function writeToCertificate(name: string, number: number, location: string, offsetCapacity: number) {
   const image = await Jimp.read(`${__dirname}/images/certificate.png`);
-  const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
-  image.print(font, 10, 350, 'Jivin Vaidya');
-  await image.writeAsync('./images/certificate-1.png');
+  const font = await Jimp.loadFont(Jimp.FONT_SANS_64_WHITE);
+  const fontSmall = await Jimp.loadFont(Jimp.FONT_SANS_16_WHITE);
+  image.print(font, 115, 400, name);
+  image.print(fontSmall, 147, 507, number);
+  image.print(fontSmall, 350, 507, location);
+  image.print(fontSmall, 250, 530, `${offsetCapacity}kgs`);
+  await image.writeAsync(`${__dirname}/images/certificate-1.png`);
 }
 
 async function fileFromPath(filePath: string) {
-  const content = await fs.promises.readFile(`${__dirname}/images/certificate.png`)
+  const content = await fs.promises.readFile(`${__dirname}/images/certificate-1.png`)
   const type = mime.getType(filePath)
-  return new File([content], path.basename(filePath), { type: type! })
+  return new File([content], path.basename("keila-certificate"), { type: type! })
 }
 
-//const formatFilePath = (filePath: string) => {
-//return filePath.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
-//}
 
-async function uploadMetadata(filePath: string, trees: AppleTree[] | ConiferTree[] | PoplarTree[]) {
+async function uploadMetadata(name: string, filePath: string, trees: AppleTree[] | ConiferTree[] | PoplarTree[]) {
   try {
-    await writeToCertificate()
+    const offsetCapacity = trees[0].offsetCapacity * trees.length;
+    await writeToCertificate(name, trees.length, "Kashmir, India", offsetCapacity)
 
     const image = await fileFromPath(filePath)
-
-    //const name = formatFilePath(filePath);
 
     const nft = {
       image, // use image Blob as `image` field
@@ -68,7 +69,7 @@ async function uploadMetadata(filePath: string, trees: AppleTree[] | ConiferTree
         },
         {
           "trait_type": "initial_offset_capacity",
-          "value": `${trees[0].offsetCapacity * trees.length} kgs carbon per year`,
+          "value": `${offsetCapacity} kgs carbon per year`,
         },
       ],
     }
