@@ -28,7 +28,7 @@ declare module 'express-session' {
   app.use(express.urlencoded({ extended: true }));
   app.use(cors({
     credentials: true,
-    origin: [env.clientUrl!]
+    origin: [env.clientUrl!, "http://localhost:5000"]
   }));
 
   const connection = new DataSource({
